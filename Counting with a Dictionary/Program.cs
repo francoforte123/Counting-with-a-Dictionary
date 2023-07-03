@@ -1,26 +1,32 @@
-﻿Console.Write("inserisci un percorso di un file txt: ");
-string Path = Console.ReadLine();
+//ho modifocato tutto il programma ma non ho altre alternativr/scelta su cosa modificare
 
-Dictionary<string, int> DictionaryList = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+Console.WriteLine("inserisci il percorso completo del file txt:");
+string filePath = Console.ReadLine();
 
-string ContentFile= File.ReadAllText(Path);
+Dictionary<string, int> wordCounts = CountWords(filePath);
 
-Console.WriteLine("\nil contenuto del file di testo è: " + ContentFile);
-
-int CounterWord = 0;
-string[] ArrayWord = ContentFile.Split(new char[] {' ', '\t', '\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
-
-foreach(string word in ArrayWord)
+Console.WriteLine("frequenze di parole:");
+foreach (var word in wordCounts)
 {
-    if(DictionaryList.ContainsKey(word)) CounterWord+=1;
-    else { DictionaryList[word] = 1; }
+     Console.WriteLine(word.Key + " " + word.Value);
 }
 
-Console.WriteLine("frequenza delle parole:");
+static Dictionary<string, int> CountWords(string filePath){
+    string text = File.ReadAllText(filePath);
+    string[] words = text.Split(new char[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 
-foreach(var pair in DictionaryList)
-{
-    Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+    Dictionary<string, int> wordCounts = new(StringComparer.OrdinalIgnoreCase);
+
+    foreach (string word in words){
+
+        if (wordCounts.ContainsKey(word)){
+            wordCounts[word]++;
+        }
+        else{
+         wordCounts[word] = 1;
+        }
+    }
+    return wordCounts;
 }
 
 
